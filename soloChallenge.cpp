@@ -53,7 +53,7 @@ int main(){
     activity[5] = "Harbinger";
 
     std::string * primaries = new std::string [6];
-    primaries[0] = "Anything";
+    primaries[0] = "Weapon of your Choice";
     primaries[1] = "SMG";
     primaries[2] = "Hand Cannon";
     primaries[3] = "Auto Rifle";
@@ -61,7 +61,7 @@ int main(){
     primaries[5] = "Bow";
 
     std::string * specials = new std::string [6];
-    specials[0] = "Anything";
+    specials[0] = "Weapon of your Choice";
     specials[1] = "Slug Shotgun";
     specials[2] = "Pellet Shotgun";
     specials[3] = "Grenade Launcher";
@@ -69,7 +69,7 @@ int main(){
     specials[5] = "Fusion Rifle";
 
     std::string * heavies = new std::string [6];
-    heavies[0] = "Anything";
+    heavies[0] = "Weapon of your Choice";
     heavies[1] = "Rocket Launcher";
     heavies[2] = "Grenade Launcher";
     heavies[3] = "Machine Gun";
