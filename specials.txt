@@ -1,0 +1,6 @@
+Weapon of your Choice
+Slug Shotgun
+Pellet Shotgun
+Grenade Launcher
+Sniper Rifle
+Fusion Rifle

@@ -2,6 +2,7 @@
 // 26/01/2022
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cctype>
 #include <conio.h>
@@ -18,20 +19,48 @@ void showMods(std::string*, int);
 void showActivity(std::string*, int);
 char userInput();
 bool exitInput();
+std::string* readFile(std::string);
+int getSize(std::string);
 
 int main(){
+    system("cls");
+    std::cout << "Preparing Files..." << std::endl;
+
+    // All txt filenames
+    std::string modFile = "mods.txt";
+    std::string activityFile = "activities.txt";
+    std::string primaryFile = "primaries.txt";
+    std::string specialFile = "specials.txt";
+    std::string heavyFile = "heavies.txt";
+    std::string wFile = "wSubclasses.txt";
+    std::string hFile = "hSubclasses.txt";
+    std::string tFile = "tsubClasses.txt";
 
     // Sizes for all arrays - would use std::size_t but too lazy
-    int modsSize = 3;
-    int activitySize = 6;
-    int primariesSize = 6;
-    int specialsSize = 6;
-    int heaviesSize = 6;
-    int subclassSize = 10; // Only this one int for all 3 classes because they always have the same amount of subclasses.
+    int modsSize = getSize(modFile);
+    int activitySize = getSize(activityFile);
+    int primariesSize = getSize(primaryFile);
+    int specialsSize = getSize(specialFile);
+    int heaviesSize = getSize(heavyFile);
+    int wSize = getSize(wFile); 
+    int hSize = getSize(hFile);
+    int tSize = getSize(tFile);
 
+    // Filling arrays from files
+    std::cout << "Loading Data..." << std::endl;
+    std::string * mods = readFile(modFile);
+    std::string * activity = readFile(activityFile);
+    std::string * primaries = readFile(primaryFile);
+    std::string * specials = readFile(specialFile);
+    std::string * heavies = readFile(heavyFile);
+    std::string * wClass = readFile(wFile);
+    std::string * hClass = readFile(hFile);
+    std::string * tClass = readFile(tFile);
+
+    /*
     /////////////////////////////////////////////////////
     // Storing all missions/mods etc in arrays
-    std::string * mods = new std::string [modsSize];
+    std::sstring * mods = new std::string [modsSize];
     mods[0] = "Charged With Light";
     mods[1] = "Wells";
     mods[2] = "Resist";
@@ -102,12 +131,14 @@ int main(){
     tClass[6] = "Behemoth";
     tClass[7] = "Code Of The Siegebreaker - Bottom Tree Sunbreaker";
     tClass[8] = "Code Of The Protector - Top Tree Sentinel";
-    tClass[9] = "Code Of The Missile - Middle Tree Striker";
+    tClass[9] = "Code Of The Missile - Middle Tree Striker";*/
     /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
 
+    //system("cls");
     // Program loop
     char input = 'a';
+    int subclassSize = 0;
     while (input != 'x' && input != 'X'){
         std::cout << "Please enter what letter corresponds to your class or enter 'x' to exit the program...\n" << std::endl;
         std::cout << "[H]unter - [T]itan - [W]arlock" << std::endl;
@@ -118,6 +149,16 @@ int main(){
         // Checking to see if user wants to leave
         if(input == 'x'){
             break;
+        }
+
+        if (input == 'w'){
+            subclassSize = wSize;
+        }
+        else if (input == 'h'){
+            subclassSize = hSize;
+        }
+        else if (input == 't'){
+            subclassSize = tSize;
         }
 
         // Shows the randomized subclass based on the selected class
@@ -157,6 +198,47 @@ int main(){
     hClass = nullptr;
     tClass = nullptr;
     /////////////////////////////////////////////////////
+    
+    return 0;
+}
+
+std::string* readFile(std::string filename){
+
+    // Variables
+    int size = 0;
+    std::fstream file;
+    file.open(filename,std::ios::in); //open a file to perform read operation using file object
+    
+    size = getSize(filename);
+    // std::cout << "size: " << size << std::endl;
+
+    std::string * mods = new std::string [size];
+    
+    if (file.is_open()){   //checking whether the file is open
+        for (int i = 0 ; i < size ; i++){
+            getline(file, mods[i]); //read data from file object and put it into string.  
+        }
+        file.close(); //close the file object.
+    }
+    return mods;
+}
+
+int getSize(std::string filename){
+
+    int size = 0;
+    std::string temp;
+    std::fstream file;
+
+    file.open(filename,std::ios::in); //open a file to perform read operation using file object
+
+    if (file.is_open()){   //checking whether the file is open
+        while(getline(file, temp)){
+            size++; //read data from file object and put it into string.  
+        }
+        file.close(); //close the file object.
+    }
+    //std::cout << size << std::endl;
+    return size;
 }
 
 // Checks to see if the user wants to exit or continue
@@ -266,6 +348,7 @@ void showMods(std::string* mods, int size){
 
     // Random number to put into the array
     int num = eng() % size;
+    // std::cout << num << std::endl;
 
     // Printing
     std::cout << "Today your combat/resist mods will ONLY be: " << mods[num] << std::endl;
@@ -279,6 +362,9 @@ void showMods(std::string* mods, int size){
     }
     else if (num == 2){
         std::cout << "No Charged with Light - No Wells" << std::endl;
+    }
+    else{
+        std::cout << "test" << std::endl;
     }
     std::cout << std::endl;
 }

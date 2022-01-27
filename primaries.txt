@@ -1,0 +1,6 @@
+Weapon of your Choice
+SMG
+Hand Cannon
+Auto Rifle
+Pulse Rifle
+Bow
