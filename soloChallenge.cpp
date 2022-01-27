@@ -222,7 +222,8 @@ void showMods(std::string* mods){
     std::default_random_engine eng(seed);
     int num = eng() % 3;
 
-    std::cout << "Today your mods will be ONLY: " << mods[num] << std::endl;
+    std::cout << "Today your combat/resist mods will ONLY be: " << mods[num] << std::endl;
+    std::cout << "stat mods/finders/scavs etc allowed" << std::endl;
     if (num == 0){
         std::cout << "NO PROTECTIVE" << std::endl;
     }
