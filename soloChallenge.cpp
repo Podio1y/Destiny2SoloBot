@@ -198,7 +198,7 @@ int main(){
     hClass = nullptr;
     tClass = nullptr;
     /////////////////////////////////////////////////////
-    
+
     return 0;
 }
 
@@ -353,19 +353,29 @@ void showMods(std::string* mods, int size){
     // Printing
     std::cout << "Today your combat/resist mods will ONLY be: " << mods[num] << std::endl;
     std::cout << "stat mods/finders/scavs etc allowed" << std::endl;
-    if (num == 0){
-        std::cout << "No Wells - No Resist" << std::endl;
-        std::cout << "NO PROTECTIVE" << std::endl;
+    // if (num == 0){
+    //     std::cout << "No Wells - No Resist" << std::endl;
+    //     std::cout << "NO PROTECTIVE" << std::endl;
+    // }
+    // else if (num == 1){
+    //     std::cout << "No Charged with Light - No Resist" << std::endl;
+    // }
+    // else if (num == 2){
+    //     std::cout << "No Charged with Light - No Wells" << std::endl;
+    // }
+    // else{
+    //     std::cout << "test" << std::endl;
+    // }
+
+    // Prints every mod type not allowed
+    for (int i = 0 ; i < size ; i++){
+
+        if (i != num){
+
+            std::cout << "No " << mods[i] << " - ";
+        }
     }
-    else if (num == 1){
-        std::cout << "No Charged with Light - No Resist" << std::endl;
-    }
-    else if (num == 2){
-        std::cout << "No Charged with Light - No Wells" << std::endl;
-    }
-    else{
-        std::cout << "test" << std::endl;
-    }
+    std::cout << "NO PROTECTIVE!!!" << std::endl;
     std::cout << std::endl;
 }
 
