@@ -1,3 +1,6 @@
+// Created by: Podio
+// 26/01/2022
+
 #include <iostream>
 #include <string>
 #include <cctype>
@@ -7,6 +10,7 @@
 #include <random>
 #include <chrono>
 
+// Declarations
 int main();
 void showClass(char, std::string*, std::string*, std::string*, int);
 void showWeapons(std::string*, std::string*, std::string*, int, int, int);
