@@ -12,33 +12,13 @@ void showClass(char, std::string*, std::string*, std::string*);
 void showWeapons(std::string*, std::string*, std::string*);
 void showMods(std::string*);
 void showActivity(std::string*);
-
+char userInput();
+bool exitInput();
 
 int main(){
-    // Random number testing
-    // unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
-    // std::default_random_engine eng(seed);
 
-    // int num1 = -1;
-    // for (int i = 0 ; i < 11 ; i++){
-    //     while (num1 != i){
-    //         num1 = eng() % 10;
-    //         std::cout << num1 << std::endl;
-    //     }
-    //     std::cout << "====================== ^^ i: " << i << std::endl;
-    // 
-    // int num1 = -1;
-    // for (int i = 0 ; i < 11 ; i++){
-    //     std::default_random_engine generator;
-    //     std::uniform_int_distribution<int> distribution(0,10);
-    //     while (num1 != i){
-    //         num1 = distribution(generator);  // generates number in the range 1..6 
-    //         std::cout << num1 << std::endl;
-    //     }
-    //     std::cout << "====================== ^^ i: " << i << std::endl;
-    // }
-    
-    ////////////////////////////////////////////
+    /////////////////////////////////////////////////////
+    // Storing all missions/mods etc in arrays
     std::string * mods = new std::string [3];
     mods[0] = "Charged With Light";
     mods[1] = "Wells";
@@ -112,35 +92,19 @@ int main(){
     tClass[8] = "Code Of The Protector - Top Tree Sentinel";
     tClass[9] = "Code Of The Missile - Middle Tree Striker";
     /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
 
     // Program loop
     char input = 'a';
-    char exitInput = 'a';
+    
     while (input != 'x' && input != 'X'){
         std::cout << "Please enter what letter corresponds to your class or enter 'x' to exit the program...\n" << std::endl;
         std::cout << "[H]unter - [T]itan - [W]arlock" << std::endl;
 
-        // std::cin >> input;
-        input = getch();
-        // std::cout << "-" << input << "-" << std::endl;
-        input = tolower(input);
+        // User input
+        input = userInput();
 
-        while (input != 'h' && input != 't' && input != 'w' && input != 'x'){
-
-            std::cout << "Sorry, thats not an 'H', 'T', 'W', or 'X'..." << std::endl;
-            std::cout << "Please try again..." << std::endl;
-
-            // std::cin >> input;
-            input = getch();
-            input = tolower(input);
-            system("cls");
-
-            if (!(input != 'h' && input != 't' && input != 'w' && input != 'x')){
-                break;
-            }
-        }
-
-        //std::cout << "test: " << input << std::endl;
+        // Checking to see if user wants to leave
         if(input == 'x'){
             break;
         }
@@ -150,20 +114,13 @@ int main(){
         showMods(mods);
         showActivity(activity);
 
-        // Asking to exit or go again
-        std::cout << std::endl;
-        std::cout << "Would you like to roll again? Press 'X' to exit, or anything else to roll again..." << std::endl;
-        exitInput = getch();
-        exitInput = tolower(exitInput);
-        if (exitInput == 'x'){
+        if (exitInput()){
             break;
-        }
-        else{
-            system("cls");
         }
     }
 
     /////////////////////////////////////////////////////
+    // Memory De-allocation
     delete[] mods;
     delete[] activity;
     delete[] primaries;
@@ -180,6 +137,47 @@ int main(){
     wClass = nullptr;
     hClass = nullptr;
     tClass = nullptr;
+    /////////////////////////////////////////////////////
+}
+
+bool exitInput(){
+    char exitInput = 'a';
+    // Asking to exit or go again
+    std::cout << std::endl;
+    std::cout << "Would you like to roll again? Press 'X' to exit, or anything else to roll again..." << std::endl;
+    exitInput = getch();
+    exitInput = tolower(exitInput);
+    if (exitInput == 'x'){
+        return true;
+    }
+    else{
+        system("cls");
+    }
+    return false;
+}
+
+char userInput(){
+    char input = getch();
+    input = tolower(input);
+
+    while (input != 'h' && input != 't' && input != 'w' && input != 'x'){
+
+        system("cls");
+        std::cout << "Sorry, thats not an 'H', 'T', 'W', or 'X'..." << std::endl;
+        std::cout << "Please try again..." << std::endl;
+        std::cout << "Please enter what letter corresponds to your class or enter 'x' to exit the program...\n" << std::endl;
+        std::cout << "[H]unter - [T]itan - [W]arlock" << std::endl;
+
+        // std::cin >> input;
+        input = getch();
+        input = tolower(input);
+        system("cls");
+
+        if (!(input != 'h' && input != 't' && input != 'w' && input != 'x')){
+            break;
+        }
+    }
+    return input;
 }
 
 void showClass(char input, std::string* wClass, std::string* tClass, std::string* hClass){
