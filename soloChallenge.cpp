@@ -225,7 +225,14 @@ void showMods(std::string* mods){
     std::cout << "Today your combat/resist mods will ONLY be: " << mods[num] << std::endl;
     std::cout << "stat mods/finders/scavs etc allowed" << std::endl;
     if (num == 0){
+        std::cout << "No Wells - No Resist" << std::endl;
         std::cout << "NO PROTECTIVE" << std::endl;
+    }
+    else if (num == 1){
+        std::cout << "No Charged with Light - No Resist" << std::endl;
+    }
+    else if (num == 2){
+        std::cout << "No Charged with Light - No Wells" << std::endl;
     }
     std::cout << std::endl;
 }
