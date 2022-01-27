@@ -4,6 +4,8 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <ctime>
+#include <random>
+#include <chrono>
 
 int main();
 void showClass(char, std::string*, std::string*, std::string*);
@@ -14,11 +16,23 @@ void showActivity(std::string*);
 
 int main(){
     // Random number testing
-    // srand(time(0));
+    // unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    // std::default_random_engine eng(seed);
+
     // int num1 = -1;
     // for (int i = 0 ; i < 11 ; i++){
     //     while (num1 != i){
-    //         num1 = rand() % 11;
+    //         num1 = eng() % 10;
+    //         std::cout << num1 << std::endl;
+    //     }
+    //     std::cout << "====================== ^^ i: " << i << std::endl;
+    // 
+    // int num1 = -1;
+    // for (int i = 0 ; i < 11 ; i++){
+    //     std::default_random_engine generator;
+    //     std::uniform_int_distribution<int> distribution(0,10);
+    //     while (num1 != i){
+    //         num1 = distribution(generator);  // generates number in the range 1..6 
     //         std::cout << num1 << std::endl;
     //     }
     //     std::cout << "====================== ^^ i: " << i << std::endl;
@@ -169,7 +183,10 @@ int main(){
 }
 
 void showClass(char input, std::string* wClass, std::string* tClass, std::string* hClass){
-    int num = rand() % 10;
+    unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    std::default_random_engine eng(seed);
+    int num = eng() % 10;
+
     std::cout << "Your subclass today will be: ";
     if (input == 'w'){
         std::cout << wClass[num] << std::endl;
@@ -187,10 +204,12 @@ void showClass(char input, std::string* wClass, std::string* tClass, std::string
 }
 
 void showWeapons(std::string* primaries, std::string* specials, std::string* heavies){
+    unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    std::default_random_engine eng(seed);
 
-    int primaryNum = rand() % 6;
-    int specialNum = rand() % 6;
-    int heavyNum = rand() % 6;
+    int primaryNum = eng() % 6;
+    int specialNum = eng() % 6;
+    int heavyNum = eng() % 6;
 
     std::cout << "Today your PRIMARY weapon will be a: " << primaries[primaryNum] << std::endl;
     std::cout << "Today your SPECIAL weapon will be a: " << specials[specialNum] << std::endl;
@@ -199,7 +218,10 @@ void showWeapons(std::string* primaries, std::string* specials, std::string* hea
 }
 
 void showMods(std::string* mods){
-    int num = rand () % 3;
+    unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    std::default_random_engine eng(seed);
+    int num = eng() % 3;
+
     std::cout << "Today your mods will be ONLY: " << mods[num] << std::endl;
     if (num == 0){
         std::cout << "NO PROTECTIVE" << std::endl;
@@ -208,6 +230,9 @@ void showMods(std::string* mods){
 }
 
 void showActivity(std::string* activities){
-    int num = rand() % 6;
+    unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    std::default_random_engine eng(seed);
+    int num = eng() % 6;
+
     std::cout << "Today your activity will be: " << activities[num] << std::endl;
 }
