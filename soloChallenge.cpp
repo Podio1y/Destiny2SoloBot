@@ -13,14 +13,15 @@
 
 // Declarations
 int main();
-void showClass(char, std::string*, std::string*, std::string*, int);
-void showWeapons(std::string*, std::string*, std::string*, int, int, int);
-void showMods(std::string*, int);
-void showActivity(std::string*, int);
+void showClass(char, std::string*, std::string*, std::string*, int, int&);
+void showWeapons(std::string*, std::string*, std::string*, int, int, int, int&, int&, int&);
+void showMods(std::string*, int, int&);
+void showActivity(std::string*, int, int&);
 char userInput();
 bool exitInput();
 std::string* readFile(std::string);
 int getSize(std::string);
+bool reroll(int&, int&, int&, int&, int&, int&);
 
 // Global variable, I know Im sorry, i didnt want to go through the hassle of passing it around everywhere :(
 double difficulty = 0;
@@ -142,6 +143,23 @@ int main(){
     // Program loop
     char input = 'a';
     int subclassSize = 0;
+
+    // bool classReroll = false;
+    // bool activityReroll = false;
+    // bool primaryReroll = false;
+    // bool specialReroll = false;
+    // bool heavyReroll = false;
+    // bool heavyReroll = false;
+    // bool heavyReroll = false;
+    // bool heavyReroll = false;
+
+    int classReroll = -1;
+    int activityReroll = -1;
+    int primaryReroll = -1;
+    int specialReroll = -1;
+    int heavyReroll = -1;
+    int modReroll = -1;
+
     while (input != 'x' && input != 'X'){
         std::cout << "Please enter what letter corresponds to your class or enter 'x' to exit the program...\n" << std::endl;
         std::cout << "[H]unter - [T]itan - [W]arlock" << std::endl;
@@ -164,21 +182,32 @@ int main(){
             subclassSize = tSize;
         }
 
+        classReroll = -1;
+        activityReroll = -1;
+        primaryReroll = -1;
+        specialReroll = -1;
+        heavyReroll = -1;
+        modReroll = -1;
+
+        do{
+        
         // Shows the randomized subclass based on the selected class
-        showClass(input, wClass, tClass, hClass, subclassSize);
+        showClass(input, wClass, tClass, hClass, subclassSize, classReroll);
 
         // Shows the randomized weapons
-        showWeapons(primaries, specials, heavies, primariesSize, specialsSize, heaviesSize);
+        showWeapons(primaries, specials, heavies, primariesSize, specialsSize, heaviesSize, primaryReroll, specialReroll, heavyReroll);
 
         // Shows the randomized mods
-        showMods(mods, modsSize);
+        showMods(mods, modsSize, modReroll);
 
         // Shows the randomized activities
-        showActivity(activity, activitySize);
+        showActivity(activity, activitySize, activityReroll);
 
         difficulty /= 6;
         std::cout << std::endl;
         std::cout << "The approximate difficulty of this challenge is: " << difficulty << "/5 - " << difficulty*20 << "%" << std::endl;
+        }
+        while(reroll(classReroll, activityReroll, primaryReroll, specialReroll, heavyReroll, modReroll));
 
         // Checks to see if the user wants to exit or continue
         if (exitInput()){
@@ -207,6 +236,46 @@ int main(){
     /////////////////////////////////////////////////////
 
     return 0;
+}
+
+bool reroll(int& subclass, int& activity, int& primary, int& special, int& heavy, int& mods){
+    char input = 'q';
+    std::cout << std::endl;
+    std::cout << "Would you like to reroll a specific category? Or press [X] to skip..." << std::endl;
+    std::cout << "[C]Subclass - [A]ctivity - [P]rimary - [S]pecial - [H]eavy - [M]ods" << std::endl;
+
+    input = getch();
+    input = tolower(input);
+
+    if(input != 'c' && input != 'a' && input != 'p' && input != 's'&& input != 'h'&& input != 'm'){
+        subclass = -1;
+        activity = -1;
+        primary = -1;
+        special = -1;
+        heavy = -1;
+        mods = -1;
+        return false;
+    }
+    else if(input == 'c'){
+        subclass = -1;
+    }
+    else if(input == 'a'){
+        activity = -1;
+    }
+    else if(input == 'p'){
+        primary = -1;
+    }
+    else if(input == 's'){
+        special = -1;
+    }
+    else if(input == 'h'){
+        heavy = -1;
+    }
+    else if(input == 'm'){
+        mods = -1;
+    }
+    system("cls");
+    return true;
 }
 
 int calculateDifficulty(std::string thing){
@@ -374,7 +443,7 @@ char userInput(){
 }
 
 // Shows the randomized subclass based on what class was chosen
-void showClass(char input, std::string* wClass, std::string* tClass, std::string* hClass, int size){
+void showClass(char input, std::string* wClass, std::string* tClass, std::string* hClass, int size, int & reroll){
     // Random seed for the modern random engine
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
 
@@ -382,7 +451,14 @@ void showClass(char input, std::string* wClass, std::string* tClass, std::string
     std::default_random_engine eng(seed);
 
     // Random number to put into the array
-    int num = eng() % size;
+    int num = 0;
+    if (reroll == -1){
+        num = eng() % size;
+        reroll = num;
+    }
+    else{
+        num = reroll;
+    }
 
     // Printing
     std::cout << "Your subclass today will be: ";
@@ -406,7 +482,7 @@ void showClass(char input, std::string* wClass, std::string* tClass, std::string
 
 // Shows the random weapon types
 // PLANNING ON MAKING THIS A LOT BETTER - feels basic right now idk
-void showWeapons(std::string* primaries, std::string* specials, std::string* heavies, int pSize, int sSize, int hSize){
+void showWeapons(std::string* primaries, std::string* specials, std::string* heavies, int pSize, int sSize, int hSize, int& pReroll, int& sReroll, int& hReroll){
     // Random seed for the modern random engine
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
 
@@ -414,9 +490,36 @@ void showWeapons(std::string* primaries, std::string* specials, std::string* hea
     std::default_random_engine eng(seed);
 
     // Random numbers to put into the arrays
-    int primaryNum = eng() % pSize;
-    int specialNum = eng() % sSize;
-    int heavyNum = eng() % hSize;
+    int primaryNum = 0;
+    int specialNum = 0;
+    int heavyNum = 0;
+
+    // Primary
+    if (pReroll == -1){
+        primaryNum = eng() % pSize;
+        pReroll = primaryNum;
+    }
+    else{
+        primaryNum = pReroll;
+    }
+
+    // Special
+    if (sReroll == -1){
+        specialNum = eng() % sSize;
+        sReroll = specialNum;
+    }
+    else{
+        specialNum = sReroll;
+    }
+
+    // Heavy
+    if (hReroll == -1){
+        heavyNum = eng() % hSize;
+        hReroll = heavyNum;
+    }
+    else{
+        heavyNum = hReroll;
+    }
 
     // Printing
     std::cout << "Today your PRIMARY weapon will be a: " << primaries[primaryNum] << std::endl;
@@ -432,7 +535,7 @@ void showWeapons(std::string* primaries, std::string* specials, std::string* hea
 
 // Shows the random mod types
 // PLANNING ON MAKING THIS A LOT BETTER - feels basic right now idk
-void showMods(std::string* mods, int size){
+void showMods(std::string* mods, int size, int& reroll){
     // Random seed for the modern random engine
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
 
@@ -440,7 +543,14 @@ void showMods(std::string* mods, int size){
     std::default_random_engine eng(seed);
 
     // Random number to put into the array
-    int num = eng() % size;
+    int num = 0;
+    if (reroll == -1){
+        num = eng() % size;
+        reroll = num;
+    }
+    else{
+        num = reroll;
+    }
     // std::cout << num << std::endl;
 
     // Printing
@@ -476,10 +586,17 @@ void showMods(std::string* mods, int size){
 
 // Shows the random activty
 // PLANNING ON ADDING ACTIVITES BUT IDK WHAT - no content sadge - maybe master NFs ???? would be annoying to code it to acocunt for champ mods
-void showActivity(std::string* activities, int size){
+void showActivity(std::string* activities, int size, int& reroll){
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
     std::default_random_engine eng(seed);
-    int num = eng() % size;
+    int num = 0;
+    if (reroll == -1){
+        num = eng() % size;
+        reroll = num;
+    }
+    else{
+        num = reroll;
+    }
 
     std::cout << "Today your activity will be: " << activities[num] << std::endl;
 
