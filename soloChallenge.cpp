@@ -241,7 +241,7 @@ int main(){
 bool reroll(int& subclass, int& activity, int& primary, int& special, int& heavy, int& mods){
     char input = 'q';
     std::cout << std::endl;
-    std::cout << "Would you like to reroll a specific category? Or press [X] to skip..." << std::endl;
+    std::cout << "Would you like to reroll a specific category? Or press any to skip..." << std::endl;
     std::cout << "[C]Subclass - [A]ctivity - [P]rimary - [S]pecial - [H]eavy - [M]ods" << std::endl;
 
     input = getch();
