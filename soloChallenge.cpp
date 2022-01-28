@@ -21,6 +21,7 @@ char userInput();
 bool exitInput();
 std::string* readFile(std::string);
 int getSize(std::string);
+double difficulty = 0;
 
 int main(){
     system("cls");
@@ -173,6 +174,10 @@ int main(){
         // Shows the randomized activities
         showActivity(activity, activitySize);
 
+        difficulty /= 6;
+        std::cout << std::endl;
+        std::cout << "The approximate difficulty of this challenge is: " << difficulty << "/5 - " << difficulty*20 << "%" << std::endl;
+
         // Checks to see if the user wants to exit or continue
         if (exitInput()){
             break;
@@ -200,6 +205,84 @@ int main(){
     /////////////////////////////////////////////////////
 
     return 0;
+}
+
+int calculateDifficulty(std::string thing){
+
+    // File names
+    std::string level5File = "level5.txt";
+    std::string level4File = "level4.txt";
+    std::string level3File = "level3.txt";
+    std::string level2File = "level2.txt";
+    std::string level1File = "level1.txt";
+
+    // Sizes
+    int level5Size = getSize(level5File);
+    int level4Size = getSize(level4File);
+    int level3Size = getSize(level3File);
+    int level2Size = getSize(level2File);
+    int level1Size = getSize(level1File);
+
+    // Reading into arrays
+    std::string* level5 = readFile(level5File);
+    std::string* level4 = readFile(level4File);
+    std::string* level3 = readFile(level3File);
+    std::string* level2 = readFile(level2File);
+    std::string* level1 = readFile(level1File);
+    /////////////////////////////////////////////
+
+    std::string** bigArray = new std::string* [5];
+    bigArray[0] = level1;
+    bigArray[1] = level2;
+    bigArray[2] = level3;
+    bigArray[3] = level4;
+    bigArray[4] = level5;
+
+    int * sizes = new int [5];
+    sizes[0] = level1Size;
+    sizes[1] = level2Size;
+    sizes[2] = level3Size;
+    sizes[3] = level4Size;
+    sizes[4] = level5Size;
+
+    for (int i = 0 ; i < 5 ; i++){
+
+        for (int j = 0 ; j < sizes[i] ; j++){
+
+            if ( thing == (bigArray[i])[j] ){
+                return i+1;
+            }
+        }
+    }
+
+    /////////////////////////////////////////////
+    // Memory De-allocation
+    delete[] level5;
+    delete[] level4;
+    delete[] level3;
+    delete[] level2;
+    delete[] level1;
+    delete[] sizes;
+    delete[] bigArray;
+    level5 = nullptr;
+    level4 = nullptr;
+    level3 = nullptr;
+    level2 = nullptr;
+    level1 = nullptr;
+    sizes = nullptr;
+    bigArray = nullptr;
+
+    return 0;
+}
+
+bool isPresent(std::string* array, std::string word, int size){
+    for (int i = 0 ; i < size ; i++){
+
+        if (word == array[i]){
+            return true;
+        }
+    }
+    return false;
 }
 
 std::string* readFile(std::string filename){
@@ -303,12 +386,15 @@ void showClass(char input, std::string* wClass, std::string* tClass, std::string
     std::cout << "Your subclass today will be: ";
     if (input == 'w'){
         std::cout << wClass[num] << std::endl;
+        difficulty += calculateDifficulty(wClass[num]);
     }
     else if (input == 't'){
         std::cout << tClass[num] << std::endl;
+        difficulty += calculateDifficulty(tClass[num]);
     }
     else if(input == 'h'){
         std::cout << hClass[num] << std::endl;
+        difficulty += calculateDifficulty(hClass[num]);
     }
     else{
         std::cout << "Input Error" << std::endl;
@@ -335,6 +421,11 @@ void showWeapons(std::string* primaries, std::string* specials, std::string* hea
     std::cout << "Today your SPECIAL weapon will be a: " << specials[specialNum] << std::endl;
     std::cout << "Today your HEAVY weapon will be a: " << heavies[heavyNum] << std::endl;
     std::cout << std::endl;
+
+    // Difficulty
+    difficulty += calculateDifficulty(primaries[primaryNum]);
+    difficulty += calculateDifficulty(specials[specialNum]);
+    difficulty += calculateDifficulty(heavies[heavyNum]);
 }
 
 // Shows the random mod types
@@ -377,6 +468,8 @@ void showMods(std::string* mods, int size){
     }
     std::cout << "NO PROTECTIVE!!!" << std::endl;
     std::cout << std::endl;
+
+    difficulty += calculateDifficulty(mods[num]);
 }
 
 // Shows the random activty
@@ -387,4 +480,6 @@ void showActivity(std::string* activities, int size){
     int num = eng() % size;
 
     std::cout << "Today your activity will be: " << activities[num] << std::endl;
+
+    difficulty += calculateDifficulty(activities[num]);
 }

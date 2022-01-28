@@ -4,3 +4,4 @@ Hand Cannon
 Auto Rifle
 Pulse Rifle
 Bow
+Scout Rifle
