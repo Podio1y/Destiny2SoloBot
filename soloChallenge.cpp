@@ -21,6 +21,8 @@ char userInput();
 bool exitInput();
 std::string* readFile(std::string);
 int getSize(std::string);
+
+// Global variable, I know Im sorry, i didnt want to go through the hassle of passing it around everywhere :(
 double difficulty = 0;
 
 int main(){
