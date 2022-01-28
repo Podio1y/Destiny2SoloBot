@@ -1,6 +1,6 @@
 Weapon of your Choice
 Rocket Launcher
-Grenade Launcher
+Heavy Grenade Launcher
 Machine Gun
 Sword
 Linear Fusion Rifle
