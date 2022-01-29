@@ -205,7 +205,7 @@ int main(){
 
         difficulty /= 6;
         std::cout << std::endl;
-        std::cout << "The approximate difficulty of this challenge is: " << difficulty << "/5 - " << difficulty*20 << "%" << std::endl;
+        std::cout << "The approximate difficulty of this challenge is: " << difficulty*2 << "/10 - " << difficulty*20 << "%" << std::endl;
         }
         while(reroll(classReroll, activityReroll, primaryReroll, specialReroll, heavyReroll, modReroll));
 
@@ -278,7 +278,7 @@ bool reroll(int& subclass, int& activity, int& primary, int& special, int& heavy
     return true;
 }
 
-int calculateDifficulty(std::string thing){
+double calculateDifficulty(std::string thing){
 
     // File names
     std::string level5File = "level5.txt";
@@ -321,7 +321,7 @@ int calculateDifficulty(std::string thing){
         for (int j = 0 ; j < sizes[i] ; j++){
 
             if ( thing == (bigArray[i])[j] ){
-                return i+1;
+                return i*1.25;
             }
         }
     }
