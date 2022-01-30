@@ -21,7 +21,8 @@ char userInput();
 bool exitInput();
 std::string* readFile(std::string);
 int getSize(std::string);
-bool reroll(int&, int&, int&, int&, int&, int&);
+bool reroll(int&, int&, int&, int&, int&, int&, double);
+double getMinPercent();
 
 // Global variable, I know Im sorry, i didnt want to go through the hassle of passing it around everywhere :(
 double difficulty = 0;
@@ -160,7 +161,12 @@ int main(){
     int heavyReroll = -1;
     int modReroll = -1;
 
+    double minPercent = 0;
+    bool rerollVar = false;
+
     while (input != 'x' && input != 'X'){
+        difficulty = 0;
+        system("cls");
         std::cout << "Please enter what letter corresponds to your class or enter 'x' to exit the program...\n" << std::endl;
         std::cout << "[H]unter - [T]itan - [W]arlock" << std::endl;
 
@@ -171,6 +177,7 @@ int main(){
         if(input == 'x'){
             break;
         }
+        minPercent = getMinPercent();
 
         if (input == 'w'){
             subclassSize = wSize;
@@ -190,29 +197,39 @@ int main(){
         modReroll = -1;
 
         do{
-        
-        // Shows the randomized subclass based on the selected class
-        showClass(input, wClass, tClass, hClass, subclassSize, classReroll);
+            difficulty = 0;
+            do{
+                system("cls");
+                // Shows the randomized subclass based on the selected class
+                showClass(input, wClass, tClass, hClass, subclassSize, classReroll);
 
-        // Shows the randomized weapons
-        showWeapons(primaries, specials, heavies, primariesSize, specialsSize, heaviesSize, primaryReroll, specialReroll, heavyReroll);
+                // Shows the randomized weapons
+                showWeapons(primaries, specials, heavies, primariesSize, specialsSize, heaviesSize, primaryReroll, specialReroll, heavyReroll);
 
-        // Shows the randomized mods
-        showMods(mods, modsSize, modReroll);
+                // Shows the randomized mods
+                showMods(mods, modsSize, modReroll);
 
-        // Shows the randomized activities
-        showActivity(activity, activitySize, activityReroll);
+                // Shows the randomized activities
+                showActivity(activity, activitySize, activityReroll);
 
-        difficulty /= 6;
-        std::cout << std::endl;
-        std::cout << "The approximate difficulty of this challenge is: " << difficulty*2 << "/10 - " << difficulty*20 << "%" << std::endl;
+                difficulty /= 6;
+                std::cout << std::endl;
+                std::cout << "The approximate difficulty of this challenge is: " << difficulty*2 << "/10 - " << difficulty*20 << "%" << std::endl;
+
+                //rerollVar = reroll(classReroll, activityReroll, primaryReroll, specialReroll, heavyReroll, modReroll, minPercent);
+            }
+            while(reroll(classReroll, activityReroll, primaryReroll, specialReroll, heavyReroll, modReroll, minPercent));//rerollVar);
+
+            // if (!rerollVar){
+            //     break;
+            // }
         }
-        while(reroll(classReroll, activityReroll, primaryReroll, specialReroll, heavyReroll, modReroll));
+        while(difficulty*2 < minPercent);
 
         // Checks to see if the user wants to exit or continue
-        if (exitInput()){
-            break;
-        }
+        // if (exitInput()){
+        //     break;
+        // }
     }
 
     /////////////////////////////////////////////////////
@@ -238,14 +255,33 @@ int main(){
     return 0;
 }
 
-bool reroll(int& subclass, int& activity, int& primary, int& special, int& heavy, int& mods){
+double getMinPercent(){
+    double num = 0;
+    std::cout << "Please enter your minimum difficulty ranging from 0 - 9" << std::endl;
+
+    std::cin >> num;
+    while (num >= 9 || num <= 0){
+        system("cls");
+        std::cout << "Sorry that number is not from 0 - 9, please try again" << std::endl;
+        std::cin >> num;
+    }
+    
+    return num;
+}
+
+bool reroll(int& subclass, int& activity, int& primary, int& special, int& heavy, int& mods, double minPercent){
     char input = 'q';
     std::cout << std::endl;
     std::cout << "Would you like to reroll a specific category? Or press any to skip..." << std::endl;
     std::cout << "[C]Subclass - [A]ctivity - [P]rimary - [S]pecial - [H]eavy - [M]ods" << std::endl;
 
-    input = getch();
-    input = tolower(input);
+    if (difficulty*2 > minPercent){
+        input = getch();
+        input = tolower(input);
+    }
+    else{
+        input = 'f';
+    }
 
     if(input != 'c' && input != 'a' && input != 'p' && input != 's'&& input != 'h'&& input != 'm'){
         subclass = -1;
