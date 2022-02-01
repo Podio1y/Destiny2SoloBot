@@ -177,7 +177,7 @@ int main(){
         if(input == 'x'){
             break;
         }
-        minPercent = getMinPercent();
+        //minPercent = getMinPercent();
 
         if (input == 'w'){
             subclassSize = wSize;
@@ -196,9 +196,10 @@ int main(){
         heavyReroll = -1;
         modReroll = -1;
 
-        do{
-            difficulty = 0;
+        // do{
+             
             do{
+                difficulty = 0;
                 system("cls");
                 // Shows the randomized subclass based on the selected class
                 showClass(input, wClass, tClass, hClass, subclassSize, classReroll);
@@ -223,8 +224,8 @@ int main(){
             // if (!rerollVar){
             //     break;
             // }
-        }
-        while(difficulty*2 < minPercent);
+        // }
+        // while(difficulty*2 < minPercent);
 
         // Checks to see if the user wants to exit or continue
         // if (exitInput()){
